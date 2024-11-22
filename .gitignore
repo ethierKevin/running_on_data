@@ -22,7 +22,22 @@ venv/
 .DS_Store
 Thumbs.db
 
-/bin
-/lib
-/rod-backend
-/rod-frontend
+# Node.js dependencies in frontend
+rod-frontend/node_modules/
+
+# Python virtual environments in backend
+rod-backend/venv/
+rod-backend/bin/
+rod-backend/lib/
+rod-backend/__pycache__/
+rod-backend/*.pyc
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Build outputs (if applicable)
+rod-frontend/build/
+rod-backend/.mypy_cache/
+rod-backend/.pytest_cache/
+
