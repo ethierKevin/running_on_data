@@ -27,6 +27,9 @@ class Activity(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     metrics = db.relationship('Metrics', backref='activity', uselist=False)
 
+    def __repr__(self):
+        return f'<Activity {self.date} - {self.distance} miles / {self.duration} minutes and pace was {self.pace}>'
+
 class Metrics(db.Model):
     __tablename__ = 'metrics'
     id = db.Column(db.Integer, primary_key=True)

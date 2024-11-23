@@ -10,7 +10,7 @@ const BackgroundImage = ({ imageUrl, children }) => {
         backgroundImage: `url(${imageUrl})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        height: '400px', // You can adjust the height as needed
+        height: '400px', 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

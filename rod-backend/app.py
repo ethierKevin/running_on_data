@@ -2,6 +2,7 @@ from flask import Flask,jsonify
 from config import Config
 from extensions import db, migrate
 from models import User, Activity, Metrics
+from flask_cors import CORS
 from routes import main_blueprint
 
 
