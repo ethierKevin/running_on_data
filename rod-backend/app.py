@@ -10,11 +10,24 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    # enable CORs for cross site to port 3000
+    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+
+
     # ext initilaize
     db.init_app(app)
     migrate.init_app(app, db)
-
     app.register_blueprint(main_blueprint)
+
+    @app.after_request
+    def after_request(response):
+        print("Adding CORS headers to the response")  # Debug log
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+        response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS,PUT,DELETE'
+        return response
+
+
 
     # test
     @app.route("/test_db")

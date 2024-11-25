@@ -1,7 +1,9 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request,Flask
 from extensions import db
 from models import User,db,Activity
-from csv_parser import parse_csv
+import csv
+from flask_cors import CORS
+
 
 # init blueprint
 main_blueprint = Blueprint('main', __name__)
@@ -13,6 +15,24 @@ def home():
 
 # dummy data entry for poc 
 @main_blueprint.route("/populate_db")
+
+def parse_csv(file_stream):
+    data = []
+    csv_reader = csv.DictReader(file_stream)
+    for row in csv_reader:
+        data.append(row)
+    return data
+
+
+
+
+
+
+
+
+
+
+
 def populate_db():
     try:
         dummy_users = [
@@ -46,6 +66,8 @@ def get_users():
 
 @main_blueprint.route('/upload_csv', methods=['POST'])
 def upload_csv():
+    print("Upload CSV called ! ")
+
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
 
@@ -57,17 +79,19 @@ def upload_csv():
     if not file.filename.endswith('.csv'):
         return jsonify({'error': 'Invalid file type, only .csv allowed'}), 400
 
+    
     try:
-        data = parse_csv(file.stream)  # Use the utility function
-        for entry in data:
-            activity = Activity(
-                date=entry['date'], 
-                distance=float(entry['distance']), 
-                time=entry['time']
-            )
-            db.session.add(activity)
+        # decode from binary? 
+        decoded_file = file.stream.read().decode('utf-8')
+        csv_reader = csv.reader(decoded_file.splitlines())
 
-        db.session.commit()
-        return jsonify({'message': 'CSV data successfully uploaded and saved'}), 201
+        #process csv file
+        rows = [row for row in csv_reader]
+        print(f"Processed rows: {rows}")
+
+        return jsonify({'message': f"File {file.filename} uploaded successfully!", 'rows': rows}), 200
+
     except Exception as e:
-        return jsonify({'error': f'Failed to process CSV: {str(e)}'}), 500
+        print(f"Error processing CSV: {e}")
+        return jsonify({'error': f"Failed to process CSV: {e}"}), 500
+
