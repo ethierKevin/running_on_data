@@ -23,14 +23,12 @@ def parse_csv(file_stream):
         data.append(row)
     return data
 
-
-
-
-
-
-
-
-
+# test requests are getting to backend
+@main_blueprint.before_request
+def log_request_info():
+    print("Incoming request method:", request.method)
+    print("Incoming request path:", request.path)
+    print("Incoming request headers:", request.headers)
 
 
 def populate_db():
@@ -66,7 +64,9 @@ def get_users():
 
 @main_blueprint.route('/upload_csv', methods=['POST'])
 def upload_csv():
-    print("Upload CSV called ! ")
+    print("Request headers:", request.headers)
+    print("Request origin:", request.headers.get('Origin'))
+    print("Request files:", request.files)
 
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400

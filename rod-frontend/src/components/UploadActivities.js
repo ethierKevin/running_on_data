@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const UploadActivities = () => {
+  
   const [file, setFile] = useState(null);
 
   // get first file
@@ -20,8 +21,9 @@ const UploadActivities = () => {
     const formData = new FormData();
     formData.append('file', file); 
 
+
     try {
-      const response = await axios.post('http://localhost:5000/upload_csv', formData, {
+      const response = await axios.post('http://localhost:8000/upload_csv', formData, {
         headers: {
           'Content-Type': 'multipart/form-data' 
         }

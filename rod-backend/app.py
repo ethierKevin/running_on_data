@@ -9,9 +9,14 @@ from routes import main_blueprint
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    app.config['WTF_CSRF_ENABLED'] = False
 
     # enable CORs for cross site to port 3000
-    CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+    CORS(app, resources={r"/upload_csv": {"origins": "http://localhost:3000"}})
+
+    # CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+    # CORS(app, resources={r"/*": {"origins": "*"}})
+
 
 
     # ext initilaize
@@ -26,8 +31,6 @@ def create_app():
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
         response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS,PUT,DELETE'
         return response
-
-
 
     # test
     @app.route("/test_db")

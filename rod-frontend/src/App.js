@@ -60,6 +60,7 @@ function App() {
 
       {/* routes to start with  */}
       <Routes>
+        <Route path="/" element={<UploadActivities />} /> { }
         <Route path="/upload" element={<UploadActivities />} />
         <Route path="/stats" element={<Stats />} />
         <Route path="/history" element={<ActivityHistory />} />
